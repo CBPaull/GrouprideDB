@@ -1,0 +1,17 @@
+<h1>Users#show</h1>
+<p>Find me in app/views/users/show.html.erb</p>
+<h3><%= @user.nickname %> </h3>
+<h5> Member since <%= @user.created_at %> </h5>
+<h5> Motorcycles: <%=@user.motorcycles %></h5>
+<h5> Riding experience: <%= @user.experience %></h5>
+<p><%= @user.description %> <p>
+<h5>Rides:</h5>
+<% @user.grouprides.each do |r|%>
+<a href="/grouprides/<%= r.id %>"><p><%= r.name %> </p> 
+<p> <%= r.meet_time %> </p> </a>
+<% end %>
+<h5> Routes:</h5>
+<% @user.routes.each do |s| %>
+<p><a href="/routes/<%= s.id %>"><%= s.name %></a> </p> 
+<p> <%= r.description %> </p> 
+<% end %>

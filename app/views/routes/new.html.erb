@@ -1,0 +1,83 @@
+<p> This page will create a new route. </p>
+<p> Can be reached by clicking add a route from either the routes index, or by clicking the same from the add a ride page.</p>
+<p> depending on where the user was first, either go to routes index, or to new grouprides, with route filled in with the newly created route.</p>
+
+<script>
+	function initMap() {
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 8,
+          center: {lat: 37.3382, lng: -121.8863}  // San Jose?
+         });
+
+		var directionsService = new google.maps.DirectionsService;
+		var directionsDisplay = new google.maps.DirectionsRenderer({
+			draggable: true,
+			map: map,
+			panel: document.getElementById('right-panel')
+		});
+		var onChangeHandler = function() {
+			if ((document.getElementById('start') != null ) && (document.getElementById('end') != null)) {
+				displayRoute(directionsService, directionsDisplay);
+			}
+		};
+		document.getElementById('start').addEventListener('change', onChangeHandler);
+		document.getElementById('end').addEventListener('change', onChangeHandler);
+		directionsDisplay.addListener('directions_changed', function() {
+		});
+	}
+	function displayRoute(service, display) {
+		var address = document.getElementById('start').value
+		service.route({
+			origin: document.getElementById('start').value,
+			destination: document.getElementById('end').value,
+			waypoints: [],
+			travelMode: 'DRIVING',
+			avoidTolls: true
+		}, function(response, status) {
+			if (status === 'OK') {
+				display.setDirections(response);
+			} else {
+				alert('Could not display directions due to: ' + status);
+			}
+		});
+	}
+
+	function computeTotalDistance(result) {
+		var total = 0;
+		var myroute = result.routes[0];
+		for (var i = 0; i < myroute.legs.length; i++) {
+			total += myroute.legs[i].distance.value;
+		}
+		total = total / 1000;
+		document.getElementById('total').innerHTML = total + ' km';
+	}
+	
+	$(document).ready(function(){  
+		$('#savebutton').click(function() {
+			getpoints()
+		});
+	})
+</script>
+
+
+<form id="startform">
+	<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+	<p>Starting Address: <input type="text" id="start"></p>
+	<p>Ending Address: <input type="text" id="end"></p>
+	<input type="button" value="Set Points" id="savebutton">
+</form>
+<div id="map"></div>
+<div id="right-panel">
+	<p>Total Distance: <span id="total"></span></p>
+</div>
+<form action='/routes/' method="post" >
+<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+<input type="hidden" name="route[route]" value="${directionsDisplay.getDirections}">
+<input type="hidden" name="address" value="${displayRoute.address}">
+<p>Name: <input type="text" name="route[name]"></p>
+<p>Description: <textarea name="route[description]" width="50" height="5"> </textarea></p>
+<p>Difficulty(from 1 to 5 goats): <input type="int" name="route[difficulty]"></p>
+<P>Speed( (from 1 to 5): <input type="text" name="route[speed]"></P>
+<p><input type="submit" value="Create Route" name="Create Route"></p>
+</form>
+<!-- difficulty and speed should both be selectables that go from 1 to 5 goats and 1 to 5 ??? respectively -->

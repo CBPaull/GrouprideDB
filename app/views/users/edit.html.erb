@@ -1,0 +1,29 @@
+<h1>Users#edit</h1>
+<p>Find me in app/views/users/edit.html.erb</p>
+<p> Modify your profile here</p>
+<form action='/users/<%= @user.id %>' method="post">
+	<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+	<input name="_method" value="patch" type="hidden">
+	<p>Nickname: <input type="text" name="user[nickname]" value="<%=@user.nickname %>"></p>
+	<p>First Name: <input type="text" name="user[first_name]" value="<%=@user.first_name %>"></p>
+	<p>Last Name: <input type="text" name="user[last_name]" value="<%=@user.last_name %>"></p>
+	<p>Experience: <input type="text" name="user[experience]" value="<%=@user.experience %>"></p>
+	<p>Email: <input type="text" name="user[email]" value="<%=@user.email %>"></p>
+	<p>Motorcycles <textarea name="user[motorcycles]" placeholder="<%=@user.motorcycles %>"></textarea></p>
+	<p> Description <textarea name="user[description]" placeholder="<%=@user.description %>"></textarea></p>
+	<p><input type="submit" value="Update" name="Update"></p>
+</form>
+<p>  Your Current address is <%= @user.address.address %> </p>
+<p> Change your Address here </p>
+<form action="/users/<%= @user.id %>/address" method="post">
+	<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+	<input name="_method" value="patch" type="hidden">
+	<p>Address: <input type="text" name="street"></p>
+	<p>City: <input type="text" name="city"></p>
+	<p>State: <input type="text" name="state"></p>
+	<p><input type="submit" value="Update" name="Update"></p>
+</form>
+
+
+
+

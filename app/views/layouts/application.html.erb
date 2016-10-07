@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rides</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <!-- Source line for Google maps API -->
+  <script type="text/javascript">
+
+    var geocoder;
+
+    function initialize() {
+        geocoder = new google.maps.Geocoder();
+        map = new google.maps.Map(document.getElementById("map_canvas"));
+    }
+    function updateCoordinates(latlng)
+    {
+        if(latlng) 
+        {
+            document.getElementById('lat').value = latlng.lat();
+            document.getElementById('lng').value = latlng.lng();
+        }
+    }
+
+    function setpoints() {
+        var start = document.getElementById("street").value;
+        start += " , ";
+        start += document.getElementById("city").value;
+        start += " , " 
+        start += document.getElementById("state").value;
+        var end = document.getElementById("endstreet").value;
+        end += " , ";
+        end += document.getElementById("endcity").value;
+        end += " , " 
+        end += document.getElementById("endstate").value;
+    }
+</script>
+
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>
